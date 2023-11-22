@@ -1,11 +1,18 @@
 const express = require("express");
-
+const https = require("https");
 const app = express();
 
 app.get("/", function (req, res) {
-  res.send("server is up and running");
-});
+  const url =
+    "https://api.openweathermap.org/data/2.5/weather?q=london&appid=e72ca729af228beabd5d20e3b7749713&units=metric";
 
-app.listen(3000, function () {
-  console.log("server is listening on port 3000");
+  https.get(url, function (response) {
+    console.log(response.statusCode);
+
+    response.on("data", function (data) {
+      console.log(data);
+    });
+  });
+
+  res.send("server is up and running");
 });
