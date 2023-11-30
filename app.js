@@ -1,11 +1,27 @@
-const { log } = require("console");
+const bodyParser = require("body-parser");
+// const { log } = require("console");
 const express = require("express");
 const https = require("https");
+
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
+});
+
+app.post("/", function (req, res) {
+  const query = req.body.cityName;
+  const apiKey = "e4dfc3c2b0280dc506c41728b05445b0";
+  const unit = "metric";
   const url =
-    "https://api.openweathermap.org/data/2.5/weather?q=london&appid=e4dfc3c2b0280dc506c41728b05445b0&units=metric";
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
+    query +
+    "&appid=" +
+    apiKey +
+    "&units=" +
+    unit;
 
   https.get(url, function (response) {
     console.log(response.statusCode);
